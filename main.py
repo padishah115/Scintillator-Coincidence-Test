@@ -76,9 +76,9 @@ for file in files_csv:
         #Scan through the values in the time column until the total interval is 7 minutes
         dt = time[i] - time[0]
 
-        if dt >= mins_in_milliseconds:
+        if abs(dt - mins_in_milliseconds) <= 10000:
             ready = True
-        elif i + 1 == len(time) and dt < mins_in_milliseconds:
+        elif i + 1 == len(time) and abs(dt - mins_in_milliseconds) > 10000:
             raise ValueError(f'Fewer than {minutes} minutes recorded in {file}')
         else:
             #Increase index by 1
@@ -104,6 +104,8 @@ plt.yscale('log')
 plt.xlabel('Threshold Voltages / mV')
 plt.ylabel('Counts over 7 minutes')
 plt.title(f'Observed Coincidence Counts over {minutes} min, Vbias = {vbias}V')
+plt.legend()
+plt.savefig('coincidence_test_1')
 plt.show()
 
 
